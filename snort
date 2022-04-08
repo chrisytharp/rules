@@ -1,0 +1,97 @@
+IDS rules
+Standard rule break down:
+            [action]
+            [protocol]
+            [ip address] – source
+            [port number]  – source
+            [direction options]
+            [ip address]  – destination
+            [port number]  – destination
+            [general options]
+            [detection options]
+Example
+            alert tcp 10.10.10.0/24 any -> 192.168.0.0/24 443 (msg: “Test Rule”; content: “This is some content”; sid: 5000001; rev: 1;)
+Actions
+-------
+define which action is taken by the detection engine, if a packet matches the rule. 
+The most common 'Actions':
+                          alert  -          generates an alert and logs the packet
+                          log    -          logs the packet
+                          pass   -          ignores the packet
+                          drop   -          blocks and logs the packet
+                          reject -          blocks the packet, logs it and then sends a TCP Reset or ICMP Port Unreachable Protocol
+
+Protocol
+--------
+determines the type of traffic to look for. 
+4 valid options:
+                          TCP
+                          UDP
+                          ICMP
+                          IP
+IP Address
+----------
+The 1st IP address that must be matched
+                          any               – a wildcard for any IP address
+                          10.10.10.23       – any single valid IP address
+                          10.10.10.0/24     – CIDR notation for block ranges
+                          !192.168.0.1/24   – prefixing this field with an exclamation mark means ‘NOT’
+                          [192.168.1.1,192.168.1.2,192.168.1.3] – comma-separated lists can use the previous syntax 
+Port
+-----
+                          Port number syntax:
+                          any – a wildcard for any port
+                          443 – any single port number
+                          1:1024 – port range
+Direction Options
+-----------------
+Sets the direction of the match. 
+The valid options are as shown:
+                                  <> bidirectional
+                                  -> unidirectional
+                                  
+This is followed by another set of IP addresses and port numbers. 
+Left-hand side SOURCE : Right-hand side DESTINATION
+
+General options
+---------------
+Remainder of rule are within a set of parentheses. These are metadata of the rule. Known as key:value pairs terminated with a semicolon. 
+Several options here:
+                      msg         -  the message that displays in the log/alert
+                      sid         -  unique numerical identifier that identifies the rule and has several reserved ranges
+                      rev         -  annotates the revision of a rule
+                      classtype   -  used to categorise and group common rules and has many defaults
+
+Detection options
+-----------------
+This is where rules start to get complicated. 
+These KEY:VALUE pairs instructs the scanning engine to detect specific data within packets !!!
+
+Content
+-------
+Content keyword is the core of the rule detection. Can include TEXT, BINARY DATA or a mixture of the both. Content keywords are case SENSITIVE
+
+Examples:
+        content: "This is a string of text";      - STRING
+        content: "|68 65 6c 6c 6f|";              - HEX encloed w/ pipes '|'
+        content: "Hello |77 6f | rld";            - mix of STRINGS and HEX
+        content: !"Not this one";                 -  '!' performs a negative match 'NOT this'
+
+Behaviour of the content field is adjustable with the use of 'MODIFIERS' 
+(Ea) content keyword can have several modifiers, and the modifiers will only alter the previous content option.
+
+Some common modifiers include:
+
+        nocase          - for case-insensitive text strings
+        depth           - defines how far into a packet the match must be located. Depth of 6 tells Snort to check the first six BYTES of the payload.
+        offset          - determines where to start searching for a pattern. Offset of 20 tells Snort to check for the content after the first 20 bytes of the payload.
+        http_uri        - only match the content field if it appears in the NORMALIZED Request URI field.
+        http_stat_code  - Restricts the search to the extracted Status Code field from an HTTP server response.
+        file_data       - Applies to HTTP and SMTP xfic. The Snort engine will search for the content inside HTTP response bodies and decoded MIME attachments in email streams.
+
+More Modifiers @
+
+
+
+
+
