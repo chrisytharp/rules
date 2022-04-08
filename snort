@@ -39,10 +39,11 @@ The 1st IP address that must be matched
                           [192.168.1.1,192.168.1.2,192.168.1.3] – comma-separated lists can use the previous syntax 
 Port
 -----
-                          Port number syntax:
+                          Port number syntax:   
                           any – a wildcard for any port
                           443 – any single port number
                           1:1024 – port range
+                          1,443  - ports 1 & 443
 Direction Options
 -----------------
 Sets the direction of the match. 
