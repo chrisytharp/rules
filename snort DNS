@@ -1,0 +1,24 @@
+DNS Overview
+------------
+The DNS operates primarily on UDP port 53.
+Client issues a single UDP request to the server, which responds with a single UDP reply.
+
+There are a few exceptions when the DNS will instead use TCP port 53:
+
+            If the response is greater than 512 bytes
+            Tasks like zone transfers
+            Explicitly set by the DNS operator
+
+When writing rules for DNS entries, it's important to understand how they appear in a packet. 
+Content match of www.google.com will not work. There are no periods in the DNS; 
+instead, each part of the domain name is prepended by the number of characters within that part (the length).
+
+So a DNS packet for www.google.com would appear as follows:
+
+          0377777706676f6f676c6503636f6d00
+
+This is an important distinction, as a Snort rule with content: “www.google.com”; will not match these DNS requests. However, content: 
+        
+        “|03|www|06|google|03|com|00|”; or content: “|03 77 77 77 06 67 6f 6f 67 6c 65 03 63 6f 6d 00|”; 
+
+will produce a match.
