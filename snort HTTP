@@ -3,44 +3,49 @@ Snort has a series of pre-processors that will attempt to parse all the elements
 Example
         GET https://immersivelabs.co.uk/path/to/filename?queryname=thisisthedata HTTP/1.1\r\n
 
-http_method Modifier      -   specifies that the match must only appear in the ‘method’ portion of the request.
-
+http_method Modifier 
+--------------------
+specifies that the match must only appear in the ‘method’ portion of the request.
+            
             content: “GET”; http_method;
 
-http_uri / http_raw_uri Modifiers - Works on the URI of the request (the same way it appears in the packet). The http_uri 
+http_uri / http_raw_uri Modifiers 
+---------------------------------
+Works on the URI of the request (the same way it appears in the packet). The http_uri 
 modifier attempts to 'normalise the URI string' w/ techs like URI decoding. The URI is the identifier that maps to files on a server.
 
             content:”immersive”; http_raw_uri;
 
-http_header / http_raw_header is a Content Modifier - Restricts the search to the extracted header fields of an HTTP client request or an HTTP server 
+http_header / http_raw_header is a Content Modifier 
+--------------------------------------------------- 
+Restricts the search to the extracted header fields of an HTTP client request or an HTTP server 
 response.
 
 Example of a User-Agent header match is as follows:
 
             content: “User-Agent: Mozilla/5.0\r\n”; http_header
 
-http_client_body
-The http_client_body keyword is a content modifier that restricts the search to the body of an HTTP client request. For example, this would be useful
-to detect content in outgoing HTTP POST requests.
+http_client_body Modifier 
+-------------------------
+Restricts the search to the body of an HTTP client request. 
+Example
+             Usefulto detect content in 'outgoing HTTP POST requests'
 
 file_data
-This specifies that the match must be made against the body of the response object. It will be dechunked and uncompressed if an HTTP stream is detected.
-This modifier appears before the content match, for example file_data; content: “immersive”;.
-
-There are several other modifiers and the Snort manual contains detailed information and examples for each of them.
+---------
+Specofoes Match must be made against the BODY of the response object. It will be 'dechunked and uncompressed' if an HTTP stream is detected.
+This modifier appears before the content match, 
+Example 
+             file_data; content: “immersive”;
 
 Other modifiers
-http_cookie limits the search to look for the cookie header value of an HTTP request/response.
-
-http_raw_cookie operates similarly to http_cookie but specifically looks for the unnormalised cookie header value of an HTTP request/response.
-
-http_stat_code limits the search to the ‘Status Message' value of an HTTP request/response.
-
-http_encode limits the search based on the encoding type of the HTTP request/response.
-
-uricontent limits the search based on the normalised request URI field.
-
-urilen limits the search based on the length (exact length, minimum/maximum length, or range of URI lengths) to match.
+---------------
+http_cookie                     - limits the search to look for the cookie header value of an HTTP request/response.
+http_raw_cookie                 - operates similarly to http_cookie but specifically looks for the unnormalised cookie header value of an HTTP request/response.
+http_stat_code                  - limits the search to the ‘Status Message' value of an HTTP request/response.
+http_encode                     - limits the search based on the encoding type of the HTTP request/response.
+uricontent                      - limits the search based on the normalised request URI field.
+urilen                          - limits the search based on the length (exact length, minimum/maximum length, or range of URI lengths) to match.
 
 These modifiers can also be combined and used alongside standard modifiers like within, depth etc. The order of content and modifiers must be correct.
 If the sequence is wrong, the match will not trigger an alert, even if the content is correct.
