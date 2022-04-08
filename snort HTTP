@@ -1,35 +1,23 @@
-HTTP is a well-documented and structured protocol. This means it is relatively easy to write signatures for specific HTTP requests, as we know where in 
-the packet each element will lie.
+Snort has a series of pre-processors that will attempt to parse all the elements from an HTTP request!
 
-Snort has a series of pre-processors that will attempt to parse all the elements from an HTTP request to make writing these rules easier. 
+Example
+        GET https://immersivelabs.co.uk/path/to/filename?queryname=thisisthedata HTTP/1.1\r\n
 
-These examples will use the following URI as their test case:
+http_method Modifier      -   specifies that the match must only appear in the ‘method’ portion of the request.
 
-GET https://immersivelabs.co.uk/path/to/filename?queryname=thisisthedata HTTP/1.1\r\n
+            content: “GET”; http_method;
 
-http_method
-The http_method modifier specifies that the match must only appear in the ‘method’ portion of the request.
+http_uri / http_raw_uri Modifiers - Works on the URI of the request (the same way it appears in the packet). The http_uri 
+modifier attempts to 'normalise the URI string' w/ techs like URI decoding. The URI is the identifier that maps to files on a server.
 
-content: “GET”; http_method;
+            content:”immersive”; http_raw_uri;
 
-http_uri / http_raw_uri
-These modifiers work on the URI of the request. The http_raw_uri modifier works on the raw version (the same way it appears in the packet). The http_uri 
-modifier attempts to normalise the URI string with techniques like URI decoding. The URI is the identifier that maps to files on a server.
-
-content:”immersive”; http_raw_uri;
-
-content:”immersive”; http_uri;
-
-http_header / http_raw_header
-The http_header keyword is a content modifier that restricts the search to the extracted header fields of an HTTP client request or an HTTP server 
+http_header / http_raw_header is a Content Modifier - Restricts the search to the extracted header fields of an HTTP client request or an HTTP server 
 response.
 
-Snort version 3, which we will cover in a future episode, can match content in a specific header field by name. In Snort 2.x, you need to specify the 
-full header line.
+Example of a User-Agent header match is as follows:
 
-An example of a User-Agent header match is as follows:
-
-content: “User-Agent: Mozilla/5.0\r\n”; http_header
+            content: “User-Agent: Mozilla/5.0\r\n”; http_header
 
 http_client_body
 The http_client_body keyword is a content modifier that restricts the search to the body of an HTTP client request. For example, this would be useful
