@@ -12,10 +12,9 @@ used to support SIEM environments to perform:
 Zeek can be used for threat hunting, security architecture, forensics, vulnerability tracking, and more
 
 How does it work?
-Zeek converts raw packet capture traffic into comprehensive protocol-specific logs. To process packet captures, it can be placed on a single host to listen for 
-network traffic or you can provide stored packet captures for analysis as a minimum configuration. You can also provide a copy of your live network traffic through
+Zeek converts raw packet capture traffic into comprehensive protocol-specific logs to process packet captures, it can be placed on a 'single host' to listen for 
+NW xfic OR can provide stored packet captures for analysis as a minimum configuration. You can also provide a copy of your live network traffic through
 network taps or a port-mirroring capable switch port. A common configuration involves setting Zeek to forward traffic to SIEM tools, for data analytics such as Splunk. 
-
 
 Why use Zeek?
 SIEM environments often have unstructured data due to the variety of sources involved, alongside a high volume of network traffic, which can be difficult and 
