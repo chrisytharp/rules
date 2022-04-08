@@ -1,17 +1,15 @@
 Zeek, formerly known as Bro, is an open-source NW sec tool. 
 Capabilities: transforming NW packet captures into protocol-specific logs, monitoring & analyzing NW xfic using its own scripting language & file extraction
 
-What is Zeek?
-Zeek is a versatile, passive network security monitoring tool used to support the detection of threats such as SQL injection, brute force, and malware activity 
-within a network. Zeek also offers features that support security incidents and event management (SIEM) environments to perform:
-
-network monitoring
-incident response
-file extraction
-hashing
-forensics
-performance measurements
-Generally, Zeek can be used for threat hunting, security architecture, forensics, vulnerability tracking, and more.
+Zeek is a versatile, passive NW sec monitoring tool used to support the detection of threats
+used to support SIEM environments to perform:
+                                                network monitoring
+                                                incident response
+                                                file extraction
+                                                hashing
+                                                forensics
+                                                performance measurements
+Zeek can be used for threat hunting, security architecture, forensics, vulnerability tracking, and more
 
 How does it work?
 Zeek converts raw packet capture traffic into comprehensive protocol-specific logs. To process packet captures, it can be placed on a single host to listen for 
