@@ -1,0 +1,50 @@
+SMTP Preprocessor
+Snort comes with an SMTP preprocessor, where SMTP stands for Simple Mail Transfer Protocol. The preprocessor is part of the engine and is responsible for parsing and 
+decoding recognisable SMTP traffic, including any Base64 (B64) encoded attachments or text.
+
+Most of the preprocessor configuration can be left untouched; however, the one section worth checking on your setup is b64_decode_depth. This value determines how 
+much of the data is decoded. Valid options for this value are -1 to 65535.
+
+This is important because rich content in an email body will be encoded in Base64 and if you set a low value for the b64_decode_depth, you may never match on rules 
+looking for data at the end of the body of an email.
+
+When it comes to crafting rules, there isn't a collection of bespoke content matches like those found within HTTP. Instead we use the standard set of content rules 
+(as found in Episodes 1, 2 and 3) and tie that together with knowledge of the SMTP itself. This will enable you to write tighter rules with fewer false positives.
+
+Examples
+If you're looking for a subject line that starts with ‘INVOICE’:
+
+Instead of using a standard content match: content: "INVOICE";
+
+Use: content: "Subject:"; content: "INVOICE"; distance:1;
+
+This tells Snort to look for ‘INVOICE’ one byte after the ‘Subject:’ line, which is how it appears in SMTP. We can use the same technique with ‘FROM:’ and ‘TO:’
+lines to tighten our Snort rules.
+
+Attachments
+The other useful element is something we learnt earlier in the series. The file_data option in a Snort rule can be used to examine the contents of any attachment
+after it has been decoded. The Base64 decode depth will come into play here.
+
+So if we wanted to look for a RAR attachment within an email, we could look for something like this:
+
+file_data; "Rar!" offset:0; depth:4;
+
+This looks for the RAR header at the very start of the decoded file.
+
+Complex Rules
+As before, we can also combine these rule fragments to create more complex rules. For example, looking for an email that contains a zip attachment from a specific 
+email address could look something like:
+
+content: "MAIL FROM:"; content: "support@helpdesk.spam"; distance:1; file_data; "PK" offset:0; depth:2;
+
+In this lab
+In this lab, we will be exploring how to identify information within SMTP packets when writing Snort rules. You must use the Snort scanner to write valid Snort rules
+using modifiers discussed in the previous labs, before extracting data from the PCAP file and answering the questions.
+
+This is the fourth Snort rules episode in the series. If you have not yet completed the third episode, which looks into writing HTTP-based rules, it is listed below.
+
+
+
+
+
+
