@@ -30,6 +30,7 @@ http_client_body Modifier
 Restricts the search to the body of an HTTP client request. 
 Example
              Usefulto detect content in 'outgoing HTTP POST requests'
+             (file_data; content:"MZ"; depth: 2;)
 
 file_data
 ---------
