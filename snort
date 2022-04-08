@@ -89,7 +89,7 @@ Some common modifiers include:
         http_stat_code  - Restricts the search to the extracted Status Code field from an HTTP server response.
         file_data       - Applies to HTTP and SMTP xfic. The Snort engine will search for the content inside HTTP response bodies and decoded MIME attachments in email streams.
 
-More Modifiers @
+More Modifiers @ http://manual-snort-org.s3-website-us-east-1.amazonaws.com/node29.html
 
 
 
