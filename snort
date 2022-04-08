@@ -1,4 +1,7 @@
-IDS rules
+SNORT 
+IPS and/or IDS
+can be active and passive
+
 Standard rule break down:
             [action]
             [protocol]
