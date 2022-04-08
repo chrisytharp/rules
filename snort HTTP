@@ -31,6 +31,12 @@ Restricts the search to the body of an HTTP client request.
 Example
              Usefulto detect content in 'outgoing HTTP POST requests'
              (file_data; content:"MZ"; depth: 2;)
+             Instead of 
+                        http_client_body AFTER the content string, Rule needed file_data BEFORE the content string.
+
+http_client_body = the request body
+
+file_data = the response body*
 
 file_data
 ---------
