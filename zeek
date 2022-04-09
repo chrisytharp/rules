@@ -48,9 +48,33 @@ Zeek creates log files to report different network activities:
                               smtp.log
 Examining Zeek logs
 -------------------
+conn.log - Is one of the most important logs that Zeek creates. 
+It provides fundamental data on every connection made on a network: thow, what, when, and where of the packets. 
+It contains:
+          connection metadata, IP addresses, timestamps, amount of bytes transferred, and other useful fields. 
+          
+Example log has been parsed with the JQ TOOL
+           "ts": 1542074376.983638,               - ts: Timestamp of the initial packet
+           "uid": "C8SRUa8pr7GcAsFki",            - uid: Unique identifier used to identify the connection that occurred
+           "id.orig_h": "192.168.2.147",          - id.orig_h: Address of the originating host
+           "id.orig_p": 49160,                    - id.orig_p: Port of the originating host
+           "id.resp_h": "192.168.2.4",            - id.resp_h: Address of the recipient (responder) host
+           "id.resp_p": 88,                       - id.resp_p: Port of the recipient (responder) host
+           "proto": "tcp",                        - proto: Protocol used in the transport layer
+           "service": "krb_tcp",                  - service: Protocol used in the application layer
+           "duration": 0.003635883331298828,      - duration: Duration of the connection
+           "orig_bytes": 1641,                    - origin_bytes: Payload size (in bytes) from the originating host
+           "resp_bytes": 1622,                    - resp_bytes: Payload size (in bytes) from the responder host
+           "conn_state": "RSTR",                  - conn_state: State of the connection
+           "missed_bytes": 0,                     - 
+           "history": "ShADadFr",                 -
+           "orig_pkts": 6,                        -
+           "orig_ip_bytes": 1893,                 -
+           "resp_pkts": 6,                        -
+           "resp_ip_bytes": 1874                  - 
 
-
-
+local_orig: Indicates if the originating host is local
+local_resp: Indicates if the responder host is local
 
 
 
