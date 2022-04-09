@@ -1,6 +1,5 @@
 SNORT 
 IDS & can be IPS
-can be active and passive (Active-live NW investigation :: Passive - look at pcaps)
 
 Standard rule break down:
             [action]
