@@ -5,6 +5,7 @@ Every time you provide a PCAP or live traffic to Zeek, it will convert it into p
 Capabilities: transforming NW packet captures into protocol-specific logs, monitoring & analyzing NW xfic using its own scripting language & file extraction
 
 TSV
+---
 Zeek logs information in, tab-separated text files (TSVs) by default, ideal for postprocessing and analysis. Each log file contains a set of 
 headers beginning with a hash character (#), followed by metadata about the trace or traffic capture. The following example shows a dns.log in the default
 TSV format.
@@ -20,15 +21,33 @@ TSV format.
           1591367999.305988       CazOhH2qDUiJTWMCY       192.168.4.76    36844   192.168.4.1     53      udp     19671   0.066852        testmyids.com   1       C_INTERNET    1       A       0       NOERROR F       F       T       T       0       31.3.245.133    3600.000000     F
           #close  2020-06-05-14-48-32
 JSON
+----
 While TSV is the default format of these logs, Zeek can be configured to produce alternative outputs. 
 example DNS log
 
 {"ts":1591367999.306059,"uid":"CMdzit1AMNsmfAIiQc","id.orig_h":"192.168.4.76","id.orig_p":36844,"id.resp_h":"192.168.4.1","id.resp_p":53,"proto":"udp","trans_id":8555,"query":"testmyids.com","qclass":1,"qclass_name":"C_INTERNET","qtype":28,"qtype_name":"AAAA","rcode":0,"rcode_name":"NOERROR","AA":false,"TC":false,"RD":true,"RA":false,"Z":0,"rejected":false}
 {"ts":1591367999.305988,"uid":"CMdzit1AMNsmfAIiQc","id.orig_h":"192.168.4.76","id.orig_p":36844,"id.resp_h":"192.168.4.1","id.resp_p":53,"proto":"udp","trans_id":19671,"rtt":0.06685185432434082,"query":"testmyids.com","qclass":1,"qclass_name":"C_INTERNET","qtype":1,"qtype_name":"A","rcode":0,"rcode_name":"NOERROR","AA":false,"TC":false,"RD":true,"RA":true,"Z":0,"answers":["31.3.245.133"],"TTLs":[3600.0],"rejected":false}
 
+Zeek log files
+--------------
+Zeek creates log files to report different network activities:
 
+          Most Common ones are listed below: 
+                              conn.log                    - TCP/UDP/ICMP connections
+                              files.log                   - Summarizes files transferred over the network
+                              packet_filter.log           - Lists packet filters that were applied
+                              x509.log                    - x509 certificate information
+                              weird.log                   - Unexpected network-level activity
 
-
+          There are also protocol-specific logs:
+                              dns.log
+                              http.log
+                              ssh.log
+                              dhcp.log
+                              ssl.log
+                              smtp.log
+Examining Zeek logs
+-------------------
 
 
 
