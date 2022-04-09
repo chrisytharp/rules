@@ -76,7 +76,9 @@ Example log has been parsed with the JQ TOOL
 local_orig: Indicates if the originating host is local
 local_resp: Indicates if the responder host is local
 
-
+SMTP log will show its proprietary from and subject field
+----
+more @ https://f.hubspotusercontent00.net/hubfs/8645105/Corelight_May2021/Pdf/002_CORELIGHT_080420_ZEEK_LOGS_US_ONLINE.pdf
 
 
 
