@@ -1,0 +1,34 @@
+Captured Xfic is transformed into several protocol-specific .log files for analysis. 
+A number of tools that can help you capture packets such as Wireshark and tcpdump.
+
+Converting a PCAP
+When capturing traffic with such tools, it can be time-consuming to manually inspect every single packet. Instead, you can inspect a specific
+protocol/log type to search for information of interest more efficiently. To do so, you'll need to convert the existing PCAPs to Zeek logs by using:
+
+              zeek -r <pcap_file_location>
+
+The -r parameter specifies that Zeek will be reading from an offline packet capture, informing the location of the file. For live traffic inspection,
+you can use the -w option.
+
+By default, Zeek creates a variety of different logs in the tab-separated values (TSV) format, however, users may sometimes prefer to read their logs 
+in Javascript Object Notation (JSON) format. JSON has become a standard format for labeling and storing many types of data across a plethora of log 
+aggregation tools and third-party query languages. The syntax for outputting in JSON format is:
+
+              zeek -r <pcap_file_location> LogAscii::use_json=T
+
+Although Zeek will appear to create the same output files, their contents will be JSON formatted upon inspection, with a separate line for each log entry.
+
+              zeek -r <pcap>
+              zeek -r <pcap> LogAscii::use_json=T
+              ls
+              cat <log_file>
+              head <log_file>
+              grep <expression>
+
+
+
+
+
+
+
+
