@@ -1,5 +1,5 @@
 IPS
-Active OR Passive Scanning
+Passive Scanning
 Zeek, formerly known as Bro, is an open-source NW sec tool. 
 Capabilities: transforming NW packet captures into protocol-specific logs, monitoring & analyzing NW xfic using its own scripting language & file extraction
 
