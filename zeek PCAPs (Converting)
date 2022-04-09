@@ -9,9 +9,8 @@ To inspect a specific protocol/log type to search for information of interest. T
 -r    : parameter specifies that Zeek will be reading from an offline pcap
 -w    : parameter specifies that Zeek will be reading from live traffic inspection
 
-By default, Zeek creates a variety of different logs in the tab-separated values (TSV) format, however, users may sometimes prefer to read their logs 
-in Javascript Object Notation (JSON) format. JSON has become a standard format for labeling and storing many types of data across a plethora of log 
-aggregation tools and third-party query languages. The syntax for outputting in JSON format is:
+Zeek creates a variety of different logs in the tab-separated values (TSV) format 
+To create JSON use syntax for outputting in JSON format is:
 
               zeek -r <pcap_file_location> LogAscii::use_json=T
 
