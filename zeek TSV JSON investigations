@@ -40,7 +40,7 @@ Analysts may choose to convert PCAPs into JSON logs, which can be inspected usin
 such as jq – a JSON parser
 By default, jq outputs JSON formatted data into key:value pairs.
 
-               jq . conn.log
+               jq .conn.log
                
 When you run jq without any flags or fields, it will output everything
 The tool is most useful when you give it specific fields to look for
