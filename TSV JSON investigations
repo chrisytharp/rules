@@ -1,18 +1,16 @@
 zeek-cut
 --------
-zeek-cut is a useful tool that makes interacting with Zeek log files in TSV format much easier. It allows you to parse TSV log files for data by 
-specifying header fields within your search so that you can view all data held under common headings in a more organized manner.
-
-zeek-cut only takes input through redirection, using the operators | and <. For example:
-
+zeek-cut makes interacting w/ TSV logs easier. You can parse TSV log files by specifying [header fields] to view all data held under a common header
+zeek-cut only takes input through redirection, using the operators '|' and '<'
+Example...
               cat conn.log | zeek-cut
               # OR
               zeek-cut < conn.log
-When this command is run without any field names specified, zeek-cut will simply output all fields. If required, fields can be specified at the end of 
-the command.
+              
+When cmd is ran with no field names, zeek-cut will simply output ALL fields. 
+Fields can be specified at the end of the cmd
 
-The following example can be used to view all instances of the field ‘id.orig_h’, which displays the endpoint IP address of a connection's source. This
-command can be chained together with others to compile information from the log data. We'll touch on chaining commands later in this lab.              
+Ex... vieww all instances of the field ‘id.orig_h’ This cmd can be chained together w/ others to compile information from the log data         
 
               cat conn.log | zeek-cut id.orig_h
               # OR
