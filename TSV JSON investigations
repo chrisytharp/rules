@@ -1,1 +1,73 @@
+zeek-cut
+--------
+zeek-cut is a useful tool that makes interacting with Zeek log files in TSV format much easier. It allows you to parse TSV log files for data by specifying header fields within your search so that you can view all data held under common headings in a more organized manner.
+
+zeek-cut only takes input through redirection, using the operators | and <. For example:
+
+              cat conn.log | zeek-cut
+              # OR
+              zeek-cut < conn.log
+When this command is run without any field names specified, zeek-cut will simply output all fields. If required, fields can be specified at the end of the command.
+
+The following example can be used to view all instances of the field ‘id.orig_h’, which displays the endpoint IP address of a connection's source. This command can be chained together with others to compile information from the log data. We'll touch on chaining commands later in this lab.              
+
+              cat conn.log | zeek-cut id.orig_h
+              # OR
+              zeek-cut id.orig_h  < conn.log
+awk
+---
+awk can be used to search logs and modify the output with versatile terminal scripting functions (such as simple variables) to store and manipulate values before output. For instance, if you want to look for the source IP address field in a log file and know that it appears in the third column of the log, you can query the position by using the positional variable $3
+
+              awk ‘/^[^#]/ {print $3}’ dns.log
+The same logic can be applied to the rest of the log fields (the variable $1 for the field ts and the variable $2 for the field uid, etc). Positional variables can then be used with programmatic operators (=, >, <, etc) to search for more specific information within a log file. For example, an IP address can be specified by the use of its positional variable and then with the == operator given as a filter (awk ‘$3 == “x.x.x.x”’).
+
+Regular expressions (regex) can match patterns of text within data. The pattern /^[^#]/ is used to match the log's content only, ignoring any headings that start with a # character. If you're unfamiliar with regex or want to refresh your knowledge, check out the following lab:
+
+Output can be piped into a zeek-cut command for more advanced parsing of specific fields.
+
+Searching Zeek JSON logs
+------------------------
+jq
+Analysts may choose to convert PCAPs into JSON logs, which can be inspected using specialized applications that recognize the format, such as jq – a JSON parser. By default, jq outputs JSON formatted data into key:value pairs.
+
+               jq . conn.log
+When you run jq without any flags or fields, it will output everything. The flag -c can be passed, which prints the output of jq in a more 'compact' format. The tool is most useful when you give it specific fields to look for, such as:
+
+                jq ‘.proto’ conn.log
+If you'd like to retrieve multiple keys, you can separate them using a comma between each field ('.field1,.field2'). To find out more about what you can do with jq, see the https://stedolan.github.io/jq/manual/
+
+How to analyze Zeek logs
+------------------------
+The conn.log serves as an excellent starting point during an investigation. This log provides a lot of basic information, which, when combined and correlated with information from other logs, can be extremely valuable.
+
+As you begin analyzing Zeek logs, it's worth keeping in mind what sort of information you'd like to gather so that you can target specific logs or fields. For instance, if you wanted to look for all connections made from a specific IP address in your data, you could query the log field ‘id.orig_h‘ in the log ‘conn.log.‘
+
+In reality, searching Zeek logs effectively will likely require a combination of the tools mentioned above and common Linux command-line tools such as cat, head, tail, grep, sort, uniq, wc, etc. 
+
+Earlier in this lab, we used the field ‘id.orig_h’ to view endpoint IP addresses where a connection originates from in the 'conn.log'. We can compile data from this field to determine certain information from the log file; in this case, to determine the most talkative hosts (the IP addresses where most traffic originates from) and display the total connections made by this host. 
+
+The following example displays one method in which this can be achieved: 
+
+                cat conn.log | zeek-cut id.orig_h | sort | uniq -c | sort -n
+Command summary
+
+                # Remember, these commands can be combined to achieve what you need using the pipe character (|).
+                cat log.log | zeek-cut # uses the zeek-cut utility to print all fields in a log file in a human-readable format.
+                zeek-cut < log.log # uses the zeek-cut utility to print all fields in a log file in a human-readable format.
+                cat log.log | zeek-cut field1 field2 # uses the zeek-cut utility to print only the specified fields from a log.
+                zeek-cut field1 field2 < log.log # uses the zeek-cut utility to print only the specified fields from a log.
+                jq . log.log # uses the jq utility to print everything in a JSON log file in a human-readable format.
+                jq ‘.field1’ log.log # uses the jq utility to print only the specified files from a JSON log.
+                awk ‘/^[^#]/ {print $3}' log.log # uses awk to query for the 3rd positional variable in a log file.
+                sort -u # sort the data and output only the first time it appears.
+                sort -n # sort the data numerically.
+                uniq -c # print unique lines and count how many times they appear.
+                wc -l # display the number of lines in a specified file.
+                head -n 5 # prints the first 5 lines of a file.
+
+
+
+
+
+
 
