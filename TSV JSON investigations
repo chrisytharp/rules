@@ -36,16 +36,23 @@ Output can be piped into a zeek-cut command for more advanced parsing of specifi
 Searching Zeek JSON logs
 ------------------------
 jq
-Analysts may choose to convert PCAPs into JSON logs, which can be inspected using specialized applications that recognize the format, such as jq – a 
-JSON parser. By default, jq outputs JSON formatted data into key:value pairs.
+Analysts may choose to convert PCAPs into JSON logs, which can be inspected using specialized applications that recognize the format, 
+such as jq – a JSON parser
+By default, jq outputs JSON formatted data into key:value pairs.
 
                jq . conn.log
-When you run jq without any flags or fields, it will output everything. The flag -c can be passed, which prints the output of jq in a more 'compact' 
-format. The tool is most useful when you give it specific fields to look for, such as:
+               
+When you run jq without any flags or fields, it will output everything
+The tool is most useful when you give it specific fields to look for
+-c prints the output of jq in a more 'compact' format. 
 
                 jq ‘.proto’ conn.log
-If you'd like to retrieve multiple keys, you can separate them using a comma between each field ('.field1,.field2'). To find out more about what you 
-can do with jq, see the https://stedolan.github.io/jq/manual/
+                
+If you'd like to retrieve multiple keys, you can separate them using a comma between each field:
+
+                jq '.field1,.field2' conn.log
+                
+more info @ https://stedolan.github.io/jq/manual/
 
 How to analyze Zeek logs
 ------------------------
