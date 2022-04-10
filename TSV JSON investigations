@@ -56,38 +56,34 @@ more info @ https://stedolan.github.io/jq/manual/
 
 How to analyze Zeek logs
 ------------------------
-The conn.log serves as an excellent starting point during an investigation. This log provides a lot of basic information, which, when combined and 
-correlated with information from other logs, can be extremely valuable.
+The conn.log serves as an excellent starting point during an investigation. This log provides a lot of basic information
+If you wanted to look for all connections made from a specific IP address, you could query the log field ‘id.orig_h‘ in the log ‘conn.log‘
 
-As you begin analyzing Zeek logs, it's worth keeping in mind what sort of information you'd like to gather so that you can target specific logs or fields.
-For instance, if you wanted to look for all connections made from a specific IP address in your data, you could query the log field ‘id.orig_h‘ in the 
-log ‘conn.log.‘
+You wil likely use a combination of the tools in Linux command-line such as:
 
-In reality, searching Zeek logs effectively will likely require a combination of the tools mentioned above and common Linux command-line tools such as 
-cat, head, tail, grep, sort, uniq, wc, etc. 
+                cat, head, tail, grep, sort, uniq, wc, etc. 
 
-Earlier in this lab, we used the field ‘id.orig_h’ to view endpoint IP addresses where a connection originates from in the 'conn.log'. We can compile 
-data from this field to determine certain information from the log file; in this case, to determine the most talkative hosts (the IP addresses where
-most traffic originates from) and display the total connections made by this host. 
-
-The following example displays one method in which this can be achieved: 
+you can use the field ‘id.orig_h’ to view endpoint IP addresses where a connection originated from in the 'conn.log' then can compile data from this 
+field to determine certain information from the log file; in this example, to determine the most talkative hosts & display the total connections made 
+by this host. 
 
                 cat conn.log | zeek-cut id.orig_h | sort | uniq -c | sort -n
+                
 Command summary
-
-                # Remember, these commands can be combined to achieve what you need using the pipe character (|).
-                cat log.log | zeek-cut # uses the zeek-cut utility to print all fields in a log file in a human-readable format.
-                zeek-cut < log.log # uses the zeek-cut utility to print all fields in a log file in a human-readable format.
-                cat log.log | zeek-cut field1 field2 # uses the zeek-cut utility to print only the specified fields from a log.
-                zeek-cut field1 field2 < log.log # uses the zeek-cut utility to print only the specified fields from a log.
-                jq . log.log # uses the jq utility to print everything in a JSON log file in a human-readable format.
-                jq ‘.field1’ log.log # uses the jq utility to print only the specified files from a JSON log.
-                awk ‘/^[^#]/ {print $3}' log.log # uses awk to query for the 3rd positional variable in a log file.
-                sort -u # sort the data and output only the first time it appears.
-                sort -n # sort the data numerically.
-                uniq -c # print unique lines and count how many times they appear.
-                wc -l # display the number of lines in a specified file.
-                head -n 5 # prints the first 5 lines of a file.
+      # Remember, these commands can be combined to achieve what you need using the pipe character (|).
+      
+            cat log.log | zeek-cut                    # uses zeek-cut to print all fields in a log file in a human-readable format.
+            zeek-cut < log.log                        # uses zeek-cut to print all fields in a log file in a human-readable format.
+            cat log.log | zeek-cut field1 field2      # uses zeek-cut  to print only the specified fields from a log.
+            zeek-cut field1 field2 < log.log          # uses zeek-cut  to print only the specified fields from a log.
+            jq . log.log                              # uses jq utility to print everything in a JSON log file in a human-readable format.
+            jq ‘.field1’ log.log                      # uses  jq utility to print only the specified files from a JSON log.
+            awk ‘/^[^#]/ {print $3}' log.log          # uses awk to query for the 3rd positional variable in a log file.
+            sort -u                                   # sort the data and output only the first time it appears.
+            sort -n                                   # sort the data numerically.
+            uniq -c                                   # print unique lines and count how many times they appear.
+            wc -l                                     # display the number of lines in a specified file.
+            head -n 5                                 # prints the first 5 lines of a file.
 
 
 
