@@ -17,19 +17,21 @@ Ex... vieww all instances of the field ‘id.orig_h’ This cmd can be chained t
               zeek-cut id.orig_h  < conn.log
 awk
 ---
-awk can be used to search logs and modify the output with versatile terminal scripting functions (such as simple variables) to store and manipulate 
-values before output. For instance, if you want to look for the source IP address field in a log file and know that it appears in the third column of 
-the log, you can query the position by using the positional variable $3
+awk is used to search logs & modify the output w/ terminal scripting functions (like simple variables) to store & manipulate values before output
+
+For instance, if you want to look for the source IP address field in a log file and know that it appears in the third column of the log, 
+you can query the position by using the positional variable $3
 
               awk ‘/^[^#]/ {print $3}’ dns.log
-The same logic can be applied to the rest of the log fields (the variable $1 for the field ts and the variable $2 for the field uid, etc). Positional 
-variables can then be used with programmatic operators (=, >, <, etc) to search for more specific information within a log file. For example, an IP 
-address can be specified by the use of its positional variable and then with the == operator given as a filter (awk ‘$3 == “x.x.x.x”’).
+              
+The same logic can be applied to the rest of the log fields (the variable $1 for the field ts and the variable $2 for the field uid, etc). 
+Positional vars can then be used with programmatic operators (=, >, <, etc) to search for more specific information within a log file. 
+For example, an IP address can be specified by the use of its positional variable & then with the == operator given as a filter (awk ‘$3 == “x.x.x.x”’).
 
-Regular expressions (regex) can match patterns of text within data. The pattern /^[^#]/ is used to match the log's content only, ignoring any headings
-that start with a # character. If you're unfamiliar with regex or want to refresh your knowledge, check out the following lab:
+Regular expressions (regex) can match patterns of text within data. 
+The pattern /^[^#]/ is used to match the log's content only, ignoring any headings that start with a '#' character
 
-Output can be piped into a zeek-cut command for more advanced parsing of specific fields.
+Output can be piped into a zeek-cut command for more advanced parsing of specific fields
 
 Searching Zeek JSON logs
 ------------------------
