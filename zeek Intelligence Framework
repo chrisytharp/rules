@@ -11,8 +11,7 @@ be collected from a variety of sources such as event logs, past incident respons
 The intelligence framework
 --------------------------
 The intelligence framework involves three main steps:
-
-The intelligence data files are loaded.
+  The intelligence data files are loaded.
 A mechanism tells the intelligence framework that a piece of data that needs to be inspected has been identified or “seen” with the help of the Intel:Seen function.
 The framework processes any positive matches that have been discovered and outputs them into an intel.log.
 
