@@ -68,7 +68,7 @@ informed that a piece of information has been extracted and compare it against t
 This can be achieved with the help of the [Intel::seen] function. 
 
 To load the appropriate intelligence scripts for sending data to the framework, you can use following line when creating a new .zeek script or simply include it in 
-your local.zeek: 
+your /opt/zeek/share/zeek/site/local.zeek: 
 
                       @load frameworks/intel/seen
 
