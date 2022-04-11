@@ -1,0 +1,102 @@
+Quick Summary
+The Zeek signature framework is a powerful feature that enhances the base scripting functionality of a tool. By enabling analysis to create a predefined set of rules (or signatures), it can be used to identify various network traffic patterns and anomalies. In this lab, we'll explore what the framework consists of, alongside the format of Zeek signatures and how to use them.
+
+What are signatures?
+Signatures are used extensively in network security. They’re a predefined set of rules used to detect specific artifacts in a packet that could be indicators of compromise, such as known malicious IPs or domains, services running on unusual ports, and more. 
+
+You can create specific criteria for matching events from logs using signatures and use them to display alerts when a match occurs. Signatures are flexible; they can be as simple or as complex as you need them to be.
+
+The signature framework
+Similar to other intrusion detection systems (IDS), Zeek’s scripting functionality can be used to create signatures as part of the signature framework. The framework provides two paths for writing Zeek signatures; one for network traffic analysis and the other for file analysis.  
+
+Zeek’s signature framework is expansive. This lab focuses on working with signatures in Zeek for network traffic analysis. If you'd like to learn more about the signature framework you can refer to the official Zeek documentation. 
+
+
+Zeek signatures for network traffic
+Network traffic signatures are customizable. They consist of two attributes: conditions and actions. 
+
+Conditions
+Conditions provide information about what should be matched and can be split into four different types:
+
+Header conditions
+Content conditions
+Dependency conditions
+Context conditions
+Header conditions match packet headers. This includes a predefined list of attributes such as source and destination IP addresses, source and destination ports, and IP protocol specifications. They're typically made of three parts and have the format <keyword> <cmp> <value list>.
+
+<keyword> is used for specifying the header fields (e.g., source port).
+<cmp> is used to compare the keywords against the value list using logi[cal operators such as ==, !=, <, <=, >, and >=.
+<value list> is used to specify numeric values or ranges. They can be comma-separated (e.g., 10, 12, 33-40) or they can include the protocol used in the connection (tcp, udp, icmp, icmp6, ip, ip6).
+There is a predefined list of keywords: 
+
+src-ip – source IP address
+dst-ip – destination IP address
+src-port – source port
+dst-port – destination port
+ip-proto – the protocol header field
+Content conditions match the actual content of the packet (or payload). They can be specified through regular expressions and declared with the payload statement or with the help of protocol analyzers. The syntax for declaring the content is: 
+
+payload /<regular expression>/
+Dependency conditions can be used to match two or more signatures by defining the <id> of the required signature. For example, requests and replies can be matched between hosts in the network. There are only two conditions available for use:
+
+requires-signature [!] <id>  – if this condition is included in a current signature, it will only match if the <id> of the required signature is part of the same connection.
+requires-reverse-signature [!] <id> – states that another signature is required, but from the opposite direction of the same connection. This is particularly useful for matching requests and replies.
+If the ! parameter is present the condition is negated, meaning that a match will occur if the <id> is not matched.
+Context conditions can be used to evaluate a combination of other signature conditions and pass the matches to other parts of Zeek. They're only processed if all other conditions have matched. Below are a few examples of context conditions: 
+
+payload-size <cmp> <integer> – compares the payload size of the packet.
+tcp-state <state-list> and udp-state <state list> – compares the current state of the TCP/UDP connections. The <state-list> defines the keyword for the desired state. The list has three different states:
+established – for completed three-way handshakes
+originator – sent by the originator host of the connection
+responder – sent by the responder host of the connection
+Actions 
+Actions, on the other hand, define what happens after a match has occurred. There are two actions available within the Zeek signature framework – the event action and the enable action.
+
+Event actions raise a signature match and can be configured to take further actions. For instance, they can generate a log or something more advanced like an email alert that's sent after a match has occurred. The string can be populated with an alert message of your choice (e.g., “Malware detected!”).  
+
+event <string>
+Enable actions allows Zeek to activate a specific protocol analyzer or a script dynamically when required, based on an event. The string specifies the protocol analyzers (e.g., “ftp” or “http”).
+
+enable <string>
+To find out more about the signature framework, refer to the official Zeek documentation. 
+
+Signature format
+To write signatures with Zeek, always start by naming the signature object signature <signature id>, followed by curly brackets { }, wherein you can place all the conditions you want your signature to match. To keep it simple, let’s look at an example of a simple signature that matches an HTTP GET request and response from a server.
+
+signature http-get-request{
+     ip-proto == tcp
+     dst-port == 80
+     payload /GET/
+     tcp-state originator
+     event "HTTP GET REQUEST"
+}
+
+signature http-response{
+     ip-proto == tcp
+     src-ip == 192.168.10.12
+     src-port == 80 
+     payload /HTTP\/1.1 200 OK/
+     tcp-state responder
+     requires-reverse-signature http-get-request
+     event "Server HTTP Response"
+}
+The example above contains two signatures. The first one matches traffic for a GET request and the second one matches any responses with the HTTP code 200. The signature conditions are explained line by line as follows: 
+
+Defines the signature ID (http_request) of the first signature.
+Protocol used for the connection through the keyword ip-proto, followed by the logical operator == and the tcp value. This line will check if the protocol used in a packet header is part of a TCP connection.
+Destination port using the dst-port keyword, followed by the == logical operator and the value 80. This line includes a second condition that must be matched – the destination port 80.
+The payload of the packet (GET, in this case) will flag packets containing HTTP GET requests.
+The state of the TCP connection. A match will occur if this packet is sent from the originator of the connection.
+The action, in this case, an event that will log the signature with the message “GET request”.
+The second signature is similar to the first one, with some additional conditions:
+
+On line 12, the source IP keyword is included, which specifies the responder's IP address. In this case, this would be the server returning the response.
+On line 16, the connection state is set to match if the packet is sent from the responder end of the connection.
+Line 17 connects the two signatures by conditioning the second signature to match. This will only be completed if the requested signature (http-get-request) is in the opposite direction of the same connection.
+Running a PCAP through a signature
+Signatures can be loaded when creating Zeek scripts by using the @load-sigs <Directory>/<singature id>.sig directive, followed by the location and name of the signature file. You can also add this line to local.zeek to enable signatures. 
+
+Alternatively, you can perform signature-based log analysis using the command zeek -r <pcap file> -s <signature file>.
+
+The -r parameter specifies the pcap file, while -s specifies the signature file that you want to use. This will generate the typical Zeek log files alongside a signature.log, where you can examine the signature matches. 
+
