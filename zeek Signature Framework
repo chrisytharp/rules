@@ -1,40 +1,47 @@
 Quick Summary
-The Zeek signature framework is a powerful feature that enhances the base scripting functionality of a tool. By enabling analysis to create a predefined set of rules (or signatures), it can be used to identify various network traffic patterns and anomalies. In this lab, we'll explore what the framework consists of, alongside the format of Zeek signatures and how to use them.
+-------------
+The Zeek signature framework is a powerful feature that enhances the base scripting functionality of a tool. 
+By enabling analysis to create a predefined set of rules (or signatures), it can be used to identify various network traffic patterns and anomalies. 
 
 What are signatures?
-Signatures are used extensively in network security. They’re a predefined set of rules used to detect specific artifacts in a packet that could be indicators of compromise, such as known malicious IPs or domains, services running on unusual ports, and more. 
+--------------------
+Predefined set of rules used to detect specific artifacts in a packet that could be indicators of compromise, such as known malicious IPs or domains, 
+services running on unusual ports, and more. 
 
-You can create specific criteria for matching events from logs using signatures and use them to display alerts when a match occurs. Signatures are flexible; they can be as simple or as complex as you need them to be.
+You can create specific criteria for matching events from logs using signatures and use them to display alerts when a match occurs.
+Signatures are flexible; they can be as simple or as complex as you need them to be.
 
 The signature framework
-Similar to other intrusion detection systems (IDS), Zeek’s scripting functionality can be used to create signatures as part of the signature framework. The framework provides two paths for writing Zeek signatures; one for network traffic analysis and the other for file analysis.  
+------------------------
+Similar to other (IDS), zeek provides two paths for writing Zeek signatures; one for 'NW Xfic' analysis and 'File analysis'  
 
-Zeek’s signature framework is expansive. This lab focuses on working with signatures in Zeek for network traffic analysis. If you'd like to learn more about the signature framework you can refer to the official Zeek documentation. 
+NW Xfic Signatures
+------------------
+Consist of two attributes: 'conditions' & 'actions' 
 
+     Conditions provide info about what should be matched and can be split into four different types:
 
-Zeek signatures for network traffic
-Network traffic signatures are customizable. They consist of two attributes: conditions and actions. 
+          Header conditions        
+          Content conditions
+          Dependency conditions
+          Context conditions
 
-Conditions
-Conditions provide information about what should be matched and can be split into four different types:
+               Header conditions match packet headers. This includes a predefined list of attributes such as source and destination IP addresses, source and destination
+               ports, and IP protocol specifications. They're typically made of three parts and have the format <keyword> <cmp> <value list>.
 
-Header conditions
-Content conditions
-Dependency conditions
-Context conditions
-Header conditions match packet headers. This includes a predefined list of attributes such as source and destination IP addresses, source and destination ports, and IP protocol specifications. They're typically made of three parts and have the format <keyword> <cmp> <value list>.
+                         <keyword> is used for specifying the header fields (e.g., source port).
+                         <cmp> is used to compare the keywords against the value list using logi[cal operators such as ==, !=, <, <=, >, and >=.
+                         <value list> is used to specify numeric values or ranges. They can be comma-separated (e.g., 10, 12, 33-40) or they can include the protocol used in the connection (tcp, udp, icmp, icmp6, ip, ip6).
 
-<keyword> is used for specifying the header fields (e.g., source port).
-<cmp> is used to compare the keywords against the value list using logi[cal operators such as ==, !=, <, <=, >, and >=.
-<value list> is used to specify numeric values or ranges. They can be comma-separated (e.g., 10, 12, 33-40) or they can include the protocol used in the connection (tcp, udp, icmp, icmp6, ip, ip6).
 There is a predefined list of keywords: 
 
-src-ip – source IP address
-dst-ip – destination IP address
-src-port – source port
-dst-port – destination port
-ip-proto – the protocol header field
-Content conditions match the actual content of the packet (or payload). They can be specified through regular expressions and declared with the payload statement or with the help of protocol analyzers. The syntax for declaring the content is: 
+          src-ip – source IP address
+          dst-ip – destination IP address
+          src-port – source port
+          dst-port – destination port
+          ip-proto – the protocol header field
+
+               Content conditions match the actual content of the packet (or payload). They can be specified through regular expressions and declared with the payload statement or with the help of protocol analyzers. The syntax for declaring the content is: 
 
 payload /<regular expression>/
 Dependency conditions can be used to match two or more signatures by defining the <id> of the required signature. For example, requests and replies can be matched between hosts in the network. There are only two conditions available for use:
