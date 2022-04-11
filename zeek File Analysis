@@ -1,10 +1,13 @@
 Quick Summary
-The Zeek file analysis framework (FAF) allows users to easily view information related to transferred files, perform file hashing automatically, and extract suspicious files for forensic analysis. This lab will introduce you to the framework and how it can be used to identify and extract malicious files.
+The Zeek file analysis framework (FAF) allows users to easily view information related to transferred files, perform file hashing automatically, and extract 
+suspicious files for forensic analysis. This lab will introduce you to the framework and how it can be used to identify and extract malicious files.
 
 What is the file analysis framework?
-The file analysis framework (FAF) provides file metadata and analysis capabilities, introducing a simpler way of accessing file-related information than was previously possible. 
+The file analysis framework (FAF) provides file metadata and analysis capabilities, introducing a simpler way of accessing file-related information than was 
+previously possible. 
 
-Before the FAF, file analysis scripts had to be protocol-specific, meaning that the information produced would only be related to the files transferred over each protocol. For wider coverage, these scripts had to be copied and modified to fit other protocols. 
+Before the FAF, file analysis scripts had to be protocol-specific, meaning that the information produced would only be related to the files transferred over each 
+protocol. For wider coverage, these scripts had to be copied and modified to fit other protocols. 
 
 With FAF, users are provided with generalized file information. While protocol-related information is still available, analysis is no longer dependent on it.
 
@@ -18,21 +21,28 @@ Practical Lab
 We can hash it out!
 
 View Lab
-The FAF also allows for all files to be extracted to the local file system for later forensic analysis. This is not the default behavior but is an option that's very easy to implement as will become apparent later in this lab.
+The FAF also allows for all files to be extracted to the local file system for later forensic analysis. This is not the default behavior but is an option that's 
+very easy to implement as will become apparent later in this lab.
 
-Entropy testing is another feature that comes with FAF but isn't enabled by default. In the context of files, entropy is a value ranging from one to eight that measures randomness in a piece of data. A higher number correlates with increased randomness and can be used to identify packed, encrypted, or compressed files. These techniques are often used legitimately, however, they may also be utilized by malicious actors to obfuscate malware.
+Entropy testing is another feature that comes with FAF but isn't enabled by default. In the context of files, entropy is a value ranging from one to eight that 
+measures randomness in a piece of data. A higher number correlates with increased randomness and can be used to identify packed, encrypted, or compressed files. 
+These techniques are often used legitimately, however, they may also be utilized by malicious actors to obfuscate malware.
 
-While entropy alone won't distinguish harmful files from innocuous ones, it can be taken into consideration when flagging items as suspicious and in malware analysis (e.g., for classification purposes).
+While entropy alone won't distinguish harmful files from innocuous ones, it can be taken into consideration when flagging items as suspicious and in malware 
+analysis (e.g., for classification purposes).
 
 
 Using the file analysis framework
-When Zeek is used to generate logs from a packet capture or live traffic, the FAF writes metadata relating to all transferred files out to files.log. In this framework, “files” can include byte streams pulled from a network connection or another input source. The FAF can also produce more specific logs as follows:
+When Zeek is used to generate logs from a packet capture or live traffic, the FAF writes metadata relating to all transferred files out to files.log. In this 
+framework, “files” can include byte streams pulled from a network connection or another input source. The FAF can also produce more specific logs as follows:
 
-pe.log – Additional information on portable executable (PE) files such as EXE and DLL, including when the file was compiled, the required operating system for it, and whether it's a 64-bit executable.
+pe.log – Additional information on portable executable (PE) files such as EXE and DLL, including when the file was compiled, the required operating system for 
+it, and whether it's a 64-bit executable.
 x509.log – X.509 certificate information, such as its fingerprint, whether it was sent from the client, and more.
 ocsp.log – Data on online certificate status protocol (OCSP) requests and responses.
 unified2.log – Interpretation of Snort’s unified output.
-Below is a JSON format files.log. Note that the analyzers and fields relating to entropy testing and file extraction are not found in a files.log by default, as these have to be enabled first.
+Below is a JSON format files.log. Note that the analyzers and fields relating to entropy testing and file extraction are not found in a files.log by default, 
+as these have to be enabled first.
 
 {
    "ts": 1622061464.12401,
@@ -77,7 +87,8 @@ rx_hosts – Address of the host(s) the data traveled to.
 conn_uids – Unique identifier of the connection over which the file was transferred. This corresponds to the relevant UID in conn.log and other Zeek logs.
 source – Source of the file, such as the protocol that the file was transferred over or the local file path from which it was read.
 depth – Depth of the file in relation to its source. In the above example (the source being HTTP), it's the depth of the request within the TCP connection.
-analyzers – The analyzers used in the analysis of the file. Note that the above file has the portable executable (PE) analyzer listed, this will be the case for every file that has a mime type of application/x-dosexec.
+analyzers – The analyzers used in the analysis of the file. Note that the above file has the portable executable (PE) analyzer listed, this will be the case for
+every file that has a mime type of application/x-dosexec.
 mime_type – What Zeek estimates the MIME type of the file to be.
 duration – How long the analysis took.
 is_orig – Whether the file is sent by the originator of the relevant network connection or the responder.
@@ -91,7 +102,9 @@ sha1 – SHA1 hash of the file.
 extracted – Local name of the extracted file. Resides in the extract_files directory, which can be found in the same location as the generated logs.
 extracted_cutoff – Whether the file being extracted was cut off (preventing the whole file from being logged).
 entropy – Entropy of the data, ranging from one to eight.
-The FAF can detect malware through Team Cymru's Malware Hash Registry (MHR), which searches file hashes against its own database and numerous antivirus databases of known malware hash values. The framework relies on the SHA1 hash by default, but the MHR does support SHA1, SHA256, and MD5. Further information on any files that are flagged as a match can be found in notice.log. Below is the notice.log corresponding to the files.log discussed above.
+The FAF can detect malware through Team Cymru's Malware Hash Registry (MHR), which searches file hashes against its own database and numerous antivirus databases
+of known malware hash values. The framework relies on the SHA1 hash by default, but the MHR does support SHA1, SHA256, and MD5. Further information on any files 
+that are flagged as a match can be found in notice.log. Below is the notice.log corresponding to the files.log discussed above.
 
 {
    "ts": 1622062607.121345,
@@ -115,12 +128,16 @@ The FAF can detect malware through Team Cymru's Malware Hash Registry (MHR), whi
    ],
    "suppress_for": 3600.0
 }
-The files.log and notice.log above are generated from the same file transfer. As a result, some fields share the same value across both logs such as the file UIDs and connection UIDs in each. Other fields have values that complement each other such as the source (in files.log) and the protocol and port number (in notice.log). The msg field in notice.log specifies a detection rate based on how many of the databases have flagged the file as malware. The sub field links to a Virus Total search using the SHA1 hash of the file.
+The files.log and notice.log above are generated from the same file transfer. As a result, some fields share the same value across both logs such as the file UIDs
+and connection UIDs in each. Other fields have values that complement each other such as the source (in files.log) and the protocol and port number (in notice.log).
+The msg field in notice.log specifies a detection rate based on how many of the databases have flagged the file as malware. The sub field links to a Virus Total 
+search using the SHA1 hash of the file.
 
 Note: Virus Total's search URL format has changed, this will be up-to-date in newer versions of Zeek.
 
 File analysis scripts
-There are several file lifecycle events that can be used in Zeek scripts for file analysis. Information can be gathered about files by handling specific events and specifying the data that should be produced when these events occur. 
+There are several file lifecycle events that can be used in Zeek scripts for file analysis. Information can be gathered about files by handling specific events and 
+specifying the data that should be produced when these events occur. 
 
 Some events in a file's lifecycle:
 
@@ -129,7 +146,8 @@ file_over_new_connection – A file is being transferred over a new connection.
 file_weird – Unexpected activity related to a file has been detected.
 file_state_remove – File analysis is ending.
 file_gap – A chunk of the file is missing.
-File extraction and other analysis can be carried out using built-in file analyzers. Analyzers usually produce information about files via events (such as those listed above) or carry out an action. 
+File extraction and other analysis can be carried out using built-in file analyzers. Analyzers usually produce information about files via events (such as those
+listed above) or carry out an action. 
 
 Some file analysis components:
 
@@ -148,6 +166,27 @@ However, if multiple scripts are needed they can be enabled in /opt/zeek/share/z
 
 @load <relative filepath to script from /opt/zeek/share/zeek/policy/>
 
-The .zeek extension is not necessary! As you will see if you inspect local.zeek, file hashing and the MHR lookup are already enabled. File extraction and entropy testing can also be loaded in this manner. All scripts can then be run on the same PCAP with this command:
+The .zeek extension is not necessary! As you will see if you inspect local.zeek, file hashing and the MHR lookup are already enabled. File extraction and entropy 
+testing can also be loaded in this manner. All scripts can then be run on the same PCAP with this command:
 
 zeek -r <pcap file> local
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
