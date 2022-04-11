@@ -98,8 +98,10 @@ eX...  'notice.log' corresponding to the 'files.log' discussed above.
    ],
    "suppress_for": 3600.0
 }
+
 The files.log and notice.log above are generated from the same file transfer. As a result, some fields share the same value across both logs such as the file UIDs
 and connection UIDs in each. Other fields have values that complement each other such as the source (in files.log) and the protocol and port number (in notice.log).
+
 The msg field in notice.log specifies a detection rate based on how many of the databases have flagged the file as malware. The sub field links to a Virus Total 
 search using the SHA1 hash of the file.
 
@@ -111,11 +113,12 @@ specifying the data that should be produced when these events occur.
 
 Some events in a file's lifecycle:
 
-file_new – Analysis of a new file has begun.
-file_over_new_connection – A file is being transferred over a new connection.
-file_weird – Unexpected activity related to a file has been detected.
-file_state_remove – File analysis is ending.
-file_gap – A chunk of the file is missing.
+      file_new                   – Analysis of a new file has begun.
+      file_over_new_connection   – A file is being transferred over a new connection.
+      file_weird                 – Unexpected activity related to a file has been detected.
+      file_state_remove          – File analysis is ending.
+      file_gap                   – A chunk of the file is missing.
+
 File extraction and other analysis can be carried out using built-in file analyzers. Analyzers usually produce information about files via events (such as those
 listed above) or carry out an action. 
 
