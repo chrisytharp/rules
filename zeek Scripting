@@ -112,16 +112,10 @@ Executing Zeek scripts
 By default, Zeek installs a number of default scripts that can be customized and are useful for testing purposes. 
 The basic syntax for using a script with Zeek on a PCAP file is as follows:
 
-                    zeek -C -r <pcap_file_location> <script_file_location>
+                    zeek -r <pcap file> -s <signature file>.
 
-Alternatively, scripts can be placed in one of Zeek’s default paths (share/zeek/site, for example) and edits can be made to the file 'local.zeek' 
-configuration file. 
-Using the directive @load, additional scripts that are not loaded by default can be called. The keyword local then replaces the script location in the 
-syntax above. 
-In this example, Zeek will try to load a script 'policy/misc/capture-loss.zeek' by looking in ea directory in the file search path (the file search 
-path can be changed by setting the ZEEKPATH environment variable):
-
-                    zeek -C -r <pcap_location> @load tuning/defaults
+The -r parameter specifies the pcap file, while -s specifies the signature file that you want to use. This will generate the typical Zeek log files
+alongside a signature.log, where you can examine the signature matches. 
 
 If the script detects anything of note, this is outputted to a new log called 'notice.log'   !!!!!!!!!!!!!
 
