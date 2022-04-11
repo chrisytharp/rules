@@ -33,66 +33,46 @@ Below is a JSON format [files.log]
 NOTE that the analyzers and fields relating to entropy testing and file extraction are not found in a files.log by default, as these have to be enabled first.
 
 {
-   "ts": 1622061464.12401,
-   "fuid": "FL17xT1Qqv67iExoGi",
-   "tx_hosts": [
+   "ts": 1622061464.12401,                                     - ts – Timestamp of when the file was first seen
+   "fuid": "FL17xT1Qqv67iExoGi",                               - fuid – Unique identifier of the file
+   "tx_hosts": [                                               - tx_hosts – Address of the host(s) the data originated from
        "192.236.155.230"
    ],
-   "rx_hosts": [
+   "rx_hosts": [                                               - rx_hosts – Address of the host(s) the data traveled to
        "10.5.26.4"
    ],
-   "conn_uids": [
+   "conn_uids": [                                              - Unique identifier of the connection over which the file was transferred. This corresponds to the relevant UID in conn.log and other Zeek logs
        "C1Enfr2eMeOi3ajNc5"
    ],
-   "source": "HTTP",
-   "depth": 0,
-   "analyzers": [
+   "source": "HTTP",                                           - source – Source of the file, such as the protocol that the file was transferred over or the local file path from which it was read
+   "depth": 0,                                                 - depth – Depth of the file in relation to its source. In the above example (the source being HTTP), it's the depth of the request within the TCP connection
+   "analyzers": [                                              - analyzers – The analyzers used in the analysis of the file. Note that the above file has the portable executable (PE) analyzer listed, this will be the case for every file that has a mime type of application/x-dosexec.
        "ENTROPY",
        "SHA1",
        "MD5",
        "EXTRACT",
        "PE"
    ],
-   "mime_type": "application/x-dosexec",
-   "duration": 1.0848438739776612,
-   "is_orig": false,
-   "seen_bytes": 1384526,
-   "total_bytes": 1384526,
-   "missing_bytes": 0,
-   "overflow_bytes": 0,
-   "timedout": false,
-   "md5": "b8101e57b8873916caa6953bb73dfefd",
-   "sha1": "a38b59afb1f03b2c2cfc14ae5a953d8e5fd6b56d",
-   "extracted": "extract-1622061464.12401-HTTP-FL17xT1Qqv67iExoGi",
-   "extracted_cutoff": false,
-   "entropy": 6.0302535684444849
+   "mime_type": "application/x-dosexec",                        - mime_type – What Zeek estimates the MIME type of the file to be
+   "duration": 1.0848438739776612,                              - duration – How long the analysis took
+   "is_orig": false,                                            - is_orig – Whether the file is sent by the originator of the relevant network connection or the responder
+   "seen_bytes": 1384526,                                       - seen_bytes – The number of bytes analyzed.
+   "total_bytes": 1384526,                                      - total_bytes – The total number of bytes in the file
+   "missing_bytes": 0,                                          - missing_bytes – The number of bytes that were missed in analysis (e.g., due to dropped packets)
+   "overflow_bytes": 0,                                         - overflow_bytes – The number of bytes that were not analyzed (e.g., due to overlapping bytes)
+   "timedout": false,                                           - timedout – Whether the file analysis timed out at any point
+   "md5": "b8101e57b8873916caa6953bb73dfefd",                   - md5 – MD5 hash of the file
+   "sha1": "a38b59afb1f03b2c2cfc14ae5a953d8e5fd6b56d",          - sha1 – SHA1 hash of the file
+   "extracted": "extract-1622061464.12401-HTTP-FL17xT1Qqv67iExoGi",  - extracted – Local name of the extracted file. Resides in the extract_files directory, which can be found in the same location as the generated logs
+   "extracted_cutoff": false,                                   - extracted_cutoff – Whether the file being extracted was cut off (preventing the whole file from being logged)
+   "entropy": 6.0302535684444849                                - entropy – Entropy of the data, ranging from one to eight
 }
-files.log fields explained
-ts – Timestamp of when the file was first seen.
-fuid – Unique identifier of the file.
-tx_hosts – Address of the host(s) the data originated from.
-rx_hosts – Address of the host(s) the data traveled to.
-conn_uids – Unique identifier of the connection over which the file was transferred. This corresponds to the relevant UID in conn.log and other Zeek logs.
-source – Source of the file, such as the protocol that the file was transferred over or the local file path from which it was read.
-depth – Depth of the file in relation to its source. In the above example (the source being HTTP), it's the depth of the request within the TCP connection.
-analyzers – The analyzers used in the analysis of the file. Note that the above file has the portable executable (PE) analyzer listed, this will be the case for
-every file that has a mime type of application/x-dosexec.
-mime_type – What Zeek estimates the MIME type of the file to be.
-duration – How long the analysis took.
-is_orig – Whether the file is sent by the originator of the relevant network connection or the responder.
-seen_bytes – The number of bytes analyzed.
-total_bytes – The total number of bytes in the file.
-missing_bytes – The number of bytes that were missed in analysis (e.g., due to dropped packets).
-overflow_bytes – The number of bytes that were not analyzed (e.g., due to overlapping bytes).
-timedout – Whether the file analysis timed out at any point.
-md5 – MD5 hash of the file.
-sha1 – SHA1 hash of the file.
-extracted – Local name of the extracted file. Resides in the extract_files directory, which can be found in the same location as the generated logs.
-extracted_cutoff – Whether the file being extracted was cut off (preventing the whole file from being logged).
-entropy – Entropy of the data, ranging from one to eight.
-The FAF can detect malware through Team Cymru's Malware Hash Registry (MHR), which searches file hashes against its own database and numerous antivirus databases
+
+The FAF can detect malware through 'Team Cymru's Malware Hash Registry (MHR)', which searches file hashes against its own database and numerous antivirus databases
 of known malware hash values. The framework relies on the SHA1 hash by default, but the MHR does support SHA1, SHA256, and MD5. Further information on any files 
-that are flagged as a match can be found in notice.log. Below is the notice.log corresponding to the files.log discussed above.
+that are flagged as a match can be found in [notice.log] 
+
+eX...  'notice.log' corresponding to the 'files.log' discussed above.
 
 {
    "ts": 1622062607.121345,
