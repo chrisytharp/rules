@@ -107,7 +107,9 @@ search using the SHA1 hash of the file.
 
 Note: Virus Total's search URL format has changed, this will be up-to-date in newer versions of Zeek.
 
+---------------------
 File analysis scripts
+---------------------
 There are several file lifecycle events that can be used in Zeek scripts for file analysis. Information can be gathered about files by handling specific events and 
 specifying the data that should be produced when these events occur. 
 
@@ -124,25 +126,26 @@ listed above) or carry out an action.
 
 Some file analysis components:
 
-Files::ANALYZER_EXTRACT – Writes contents of a file to disk.
-Files::ANALYZER_MD5 – Calculates and reports a file's MD5 checksum.
-Files::ANALYZER_SHA1 – Calculates and reports a file's SHA1 checksum.
-Files::ANALYZER_SHA256 – Calculates and reports a file's SHA256 checksum.
-Files::ANALYZER_ENTROPY – Entropy tests a file's contents.
-Files::ANALYZER_PE – Analyzes portable executable files. Output is written to pe.log.
-Enabling and using file analysis components
-As covered in the scripting lab in this series, specific FAF scripts can be run on PCAP files. For example:
+Files::ANALYZER_EXTRACT    – Writes contents of a file to disk.
+Files::ANALYZER_MD5        – Calculates and reports a file's MD5 checksum.
+Files::ANALYZER_SHA1       – Calculates and reports a file's SHA1 checksum.
+Files::ANALYZER_SHA256     – Calculates and reports a file's SHA256 checksum.
+Files::ANALYZER_ENTROPY    – Entropy tests a file's contents.
+Files::ANALYZER_PE         – Analyzes portable executable files. Output is written to pe.log.
 
-zeek -r <pcap file> /opt/zeek/share/zeek/policy/frameworks/files/extract-all-files.zeek
+Enabling and using file analysis components
+-------------------------------------------
+                  
+                  zeek -r <pcap file> /opt/zeek/share/zeek/policy/frameworks/files/extract-all-files.zeek
 
 However, if multiple scripts are needed they can be enabled in /opt/zeek/share/zeek/site/local.zeek by adding this line:
 
-@load <relative filepath to script from /opt/zeek/share/zeek/policy/>
+                  @load <relative filepath to script from /opt/zeek/share/zeek/policy/>
 
 The .zeek extension is not necessary! As you will see if you inspect local.zeek, file hashing and the MHR lookup are already enabled. File extraction and entropy 
 testing can also be loaded in this manner. All scripts can then be run on the same PCAP with this command:
 
-zeek -r <pcap file> local
+                  zeek -r <pcap file> local
 
 
 
