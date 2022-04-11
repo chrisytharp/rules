@@ -1,28 +1,15 @@
 Quick Summary
+--------------
 The Zeek file analysis framework (FAF) allows users to easily view information related to transferred files, perform file hashing automatically, and extract 
-suspicious files for forensic analysis. This lab will introduce you to the framework and how it can be used to identify and extract malicious files.
+suspicious files for forensic analysis
 
 What is the file analysis framework?
+------------------------------------
 The file analysis framework (FAF) provides file metadata and analysis capabilities, introducing a simpler way of accessing file-related information than was 
 previously possible. 
 
-Before the FAF, file analysis scripts had to be protocol-specific, meaning that the information produced would only be related to the files transferred over each 
-protocol. For wider coverage, these scripts had to be copied and modified to fit other protocols. 
-
-With FAF, users are provided with generalized file information. While protocol-related information is still available, analysis is no longer dependent on it.
-
-Hashing
-Completed 11/19/2021
-Practical Lab
-2
-
-20 Points
-15 Minutes
-We can hash it out!
-
-View Lab
-The FAF also allows for all files to be extracted to the local file system for later forensic analysis. This is not the default behavior but is an option that's 
-very easy to implement as will become apparent later in this lab.
+FAF also allows for all files to be extracted to the local file system for later forensic analysis. This is not the default behavior but is an option that's 
+very easy to implement 
 
 Entropy testing is another feature that comes with FAF but isn't enabled by default. In the context of files, entropy is a value ranging from one to eight that 
 measures randomness in a piece of data. A higher number correlates with increased randomness and can be used to identify packed, encrypted, or compressed files. 
@@ -31,8 +18,8 @@ These techniques are often used legitimately, however, they may also be utilized
 While entropy alone won't distinguish harmful files from innocuous ones, it can be taken into consideration when flagging items as suspicious and in malware 
 analysis (e.g., for classification purposes).
 
-
 Using the file analysis framework
+---------------------------------
 When Zeek is used to generate logs from a packet capture or live traffic, the FAF writes metadata relating to all transferred files out to files.log. In this 
 framework, “files” can include byte streams pulled from a network connection or another input source. The FAF can also produce more specific logs as follows:
 
