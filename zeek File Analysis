@@ -1,4 +1,4 @@
-Quick Summary
+Quick Summary     lOGS OUTPUT - files.log , pe.log , x509.log , ocsp.log , unified2.log , notice.log
 --------------
 The Zeek file analysis framework (FAF) allows users to easily view information related to transferred files, perform file hashing automatically, and extract 
 suspicious files for forensic analysis
