@@ -11,35 +11,39 @@ be collected from a variety of sources such as event logs, past incident respons
 The intelligence framework
 --------------------------
 The intelligence framework involves three main steps:
-  The intelligence data files are loaded.
-A mechanism tells the intelligence framework that a piece of data that needs to be inspected has been identified or “seen” with the help of the Intel:Seen function.
-The framework processes any positive matches that have been discovered and outputs them into an intel.log.
+  1 - The intelligence data files are loaded.
+  2 - A mechanism tells the intelligence framework that a piece of data that needs to be inspected has been identified or “seen” with the help of the 
+      [Intel:Seen] function
+  3 - The framework processes any positive matches that have been discovered and outputs them into an [intel.log]
 
 Using the intelligence framework
+--------------------------------
 Intelligence files
-To make an intelligence file, you first need to create the components, or “fields”, with the information you want to have intelligence on. This involves specifying 
-the following fields: 
+      To make an intelligence file, you first need to create the components, or “fields”, with the information you want to have intelligence on. This involves 
+      specifying the following fields: 
 
-indicator, which represents the value of the indicator type (e.g., an IP address or a file hash).
-indicator_type, which represents the type of indicator (e.g., Intel::ADDR or Intel::URL).
-metadata, which can be added for more descriptive information about a piece of intelligence. For example the data source, description, or the name of the threat 
-actor that the intelligence data is attributed to.
-It is important for the fields to be separated with a single tab character, or the file won't be processed correctly.
+indicator       = which represents the value of the indicator type (e.g., an IP address or a file hash).
+indicator_type  = which represents the type of indicator (e.g., Intel::ADDR or Intel::URL).
+metadata        = which can be added for more descriptive information about a piece of intelligence. For example the data source, description, or the name of the
+                  threat actor that the intelligence data is attributed to.
+                  
+It is important for the fields to be separated with a 'single tab character' or the file won't be processed correctly.
+Example intel.txt: 
 
-An example intel.txt file can be seen below: 
+                  #fields     indicator     indicator_type     meta.source     meta.desc
+                  192.168.2.34    Intel::ADDR    known_bad_IPs    Example IP addresses
+                  10.182.3.44     Intel::ADDR    known_bad_IPs    Example IP addresses
+                  04b6aec529d4656040a68e18afdabfa4   Intel::FILE_HASH    malicious_files    Example file hash
+                  00fe3ca532f876c7505ddbf5825de404   Intel::FILE_HASH   malicious_files   Example file hash
+                  htd-domain.com  Intel::DOMAIN   bad_domains Example domains
+                  htp.domain.com Intel::DOMAIN    bad_domains Example domains
+                  htp2.exampledomain.com Intel::DOMAIN    bad_domains Example domains
+                  https://badurl1.ga Intel::URL bad_URLs    Example URL
+                  https://badurl2.gq Intel::URL bad_URLs    Example URL
+                  https://badurl3.ml Intel::URL bad_URLs    Example URL
 
-#fields     indicator     indicator_type     meta.source     meta.desc
-192.168.2.34    Intel::ADDR    known_bad_IPs    Example IP addresses
-10.182.3.44     Intel::ADDR    known_bad_IPs    Example IP addresses
-04b6aec529d4656040a68e18afdabfa4   Intel::FILE_HASH    malicious_files    Example file hash
-00fe3ca532f876c7505ddbf5825de404   Intel::FILE_HASH   malicious_files   Example file hash
-htd-domain.com  Intel::DOMAIN   bad_domains Example domains
-htp.domain.com Intel::DOMAIN    bad_domains Example domains
-htp2.exampledomain.com Intel::DOMAIN    bad_domains Example domains
-https://badurl1.ga Intel::URL bad_URLs    Example URL
-https://badurl2.gq Intel::URL bad_URLs    Example URL
-https://badurl3.ml Intel::URL bad_URLs    Example URL
 Indicator types
+---------------
 There are different intelligence indicator types that you can use to match in your intelligence file. You can use one of the following components or a combination 
 to create your intelligence:
 
@@ -85,3 +89,33 @@ redef Intel::read_files += {“Desktop/hash-list.txt", "Desktop/email-list.txt"}
 
 To run the script through the packet capture you can use the following command: 
 zeek -r <pcap-file> <script.zeek>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
