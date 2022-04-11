@@ -78,7 +78,7 @@ Integrating threat intelligence data with Zeek can be achieved in several ways. 
 open-source modules such as the Dovehawk Zeek Module which enables the integration of intelligence from the MISP platform. Check out a publicly available collection
 of Zeek formatted intelligence feeds on GitHub.
 
-Alternatively, you can write your own intelligence and manually add files to the framework by using the following lines: 
+Alternatively, you can write your own intelligence and manually add files to the framework by using the following lines in (/opt/zeek/share/zeek/site/local.zeek): 
 
                      redef Intel::read_files += {"Directory/intel-file.txt",};
 
