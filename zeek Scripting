@@ -46,57 +46,96 @@ Event queue and handler
     the functionality of the script is wrapped within respective events.
 
 Take the following example: 
-    the functionalities of the script are wrapped within events. The event zeek_init() is activated when Zeek is initialized and prints Hello World!. 
-    This is then followed by zeek_done() which is activated upon Zeek’s termination and prints Goodbye World!. Lastly, the event tcp_packet() is activated
-    when a TCP packet is processed.
+    the functionalities of the script are wrapped within events. The event 'zeek_init()' is activated when Zeek is initialized and prints Hello World!. 
+    This is then followed by 'zeek_done()' which is activated upon Zeek’s termination and prints Goodbye World!. Lastly, the event tcp_packet() is 
+    activated when a TCP packet is processed.
 
 Learn more about the event queue using Zeek documentation here and here.
 
 event zeek_init()
   {
-  print "Hello World!";
+    print "Hello World!";
   }
 event zeek_done()
   {
-  print "Goodbye World!";
+    print "Goodbye World!";
   }
 event tcp_packet()
   {
-  print “TCP packet detected!”;
+    print “TCP packet detected!”;
   }
+  
 Log streams
-Log streams are another integral part of Zeek. This feature of the logging framework takes on much of the process of creating log files and appends ordered and organized data into them.
+-----------
+Log streams are another integral part of Zeek. This feature of the logging framework takes on much of the process of creating log files and appends 
+ordered and organized data into them.
 
-All processed output of a Zeek script is written to specific log streams, which correspond to a single log and define the format of the log file output. That data can be filtered, modified, or redirected using logging filters which log everything by default. The final output of the data is then defined by the writer, which is by default a simple tab-separated ASCII file (in TSV format). You can create brand new streams, modify existing streams, or add parameters to existing streams.
-
-Learn more about the logging framework with Zeek’s documentation here.
+All processed output of a Zeek script is written to specific log streams, which correspond to a single log and define the format of the log file output.
+That data can be filtered, modified, or redirected using logging filters which log everything by default. The final output of the data is then defined 
+by the writer, which is by default a simple tab-separated ASCII file (in TSV format). You can create brand new streams, modify existing streams, or add 
+parameters to existing streams.
 
 Log analysis using Zeek scripts
-Now we know a little bit more about what makes up a Zeek script, let’s take a look at some of the possible use cases.
+-------------------------------
+Possible use cases.
 
-Once we know how to manage or edit Zeek’s event-driven language we can begin to leverage it to create and run scripts on PCAP trace files for packet capture analysis. A few examples of the analysis and detection capabilities of Zeek include detecting brute force attacks, detecting scans, and validating certificate chains.
+Once we know how to manage or edit Zeek’s event-driven language we can begin to leverage it to create and run scripts on PCAP trace files for packet 
+capture analysis. 
+Examples of the analysis and detection capabilities of Zeek include detecting:
+                                                                              brute force attacks, 
+                                                                              detecting scans, 
+                                                                              validating certificate chains.
 
 Tuning default scripts
-Zeek's default functionality can be tuned (optimized). It's important to understand how to leverage Zeek scripts in this way to make the tool more efficient and effective. Many of the default scripts are found in the /zeek/share directory. The important subdirectories under this are as follows:
+----------------------
+Zeek's default functionality can be tuned (optimized). It's important to understand how to leverage Zeek scripts in this way to make the tool more 
+efficient and effective. Many of the default scripts are found in the '/zeek/share' directory. The important subdirectories under this are as follows:
 
-/zeek/base: This directory contains base scripts loaded by Zeek. Edits made to base scripts are lost when Zeek is upgraded.
-/zeek/policy: This directory contains additional policy scripts that come with Zeek by default. Scripts found here are more situational so must be explicitly called if you want to load them.
-/zeek/site: This directory is where your custom scripts can be kept and called from without fear of losing them later on.
-To read more, check out Zeek’s quickstart documentation here.
+    /zeek/base:   dir contains base scripts loaded by Zeek. Edits made to base scripts are lost when Zeek is upgraded.
+    /zeek/policy: dir contains additional policy scripts that come with Zeek by default. Scripts found here are more situational so must be 'explicitly' 
+                  called if you want to load them.
+    /zeek/site:   dir is where your custom scripts can be kept and called from without fear of losing them later on.
 
-Zeek log tuning encompasses various baked-in scripts (/zeek/policy/tuning) which allow you to alter the way your default Zeek setup operates. A simple example is altering the format of printed logs.
+Zeek log tuning encompasses various baked-in scripts (/zeek/policy/tuning) which allow you to alter the way your default Zeek setup operates. 
+A simple example is altering the format of printed logs.
 
-Zeek can be optimized further by using certain scripts that forward logs to certain SIEM tools (if required). These edits are often as simple as commenting or uncommenting lines in the required scripts or editing a single variable.
+Zeek can be optimized further by using certain scripts that forward logs to certain SIEM tools (if required). These edits are often as simple as 
+commenting or uncommenting lines in the required scripts or editing a single variable.
 
-Zeek comes with a broad set of general libraries (known as frameworks) used to facilitate common functionality you may want to perform or call from when using Zeek scripts. These include the logging framework, signature framework, log analysis framework, intel framework, and more. We'll look at frameworks in more detail in Episode 5 of this series. In the meantime, check out the Zeek documentation on frameworks here.
+Zeek comes with a broad set of general libraries (known as frameworks) used to facilitate common functionality you may want to perform or call from 
+when using Zeek scripts. These include the logging framework, signature framework, log analysis framework, intel framework, and more.
 
 Additional events and their required parameters are outlined and explained in further official documentation here and here.
 
 Executing Zeek scripts
-By default, Zeek installs a number of default scripts that can be customized and are useful for testing purposes. The basic syntax for using a script with Zeek on a PCAP file is as follows:
+----------------------
+By default, Zeek installs a number of default scripts that can be customized and are useful for testing purposes. 
+The basic syntax for using a script with Zeek on a PCAP file is as follows:
 
-zeek -C -r <pcap_file_location> <script_file_location>
-Alternatively, scripts can be placed in one of Zeek’s default paths (share/zeek/site, for example) and edits can be made to the file local.zeek, a configuration file. Using the directive @load, additional scripts that are not loaded by default can be called. The keyword local then replaces the script location in the syntax above.
+                    zeek -C -r <pcap_file_location> <script_file_location>
 
-If the script detects anything of note, this is outputted to a new log called notice.log.
+Alternatively, scripts can be placed in one of Zeek’s default paths (share/zeek/site, for example) and edits can be made to the file 'local.zeek' 
+configuration file. 
+Using the directive @load, additional scripts that are not loaded by default can be called. The keyword local then replaces the script location in the 
+syntax above. 
+In this example, Zeek will try to load a script 'policy/misc/capture-loss.zeek' by looking in ea directory in the file search path (the file search 
+path can be changed by setting the ZEEKPATH environment variable):
+
+                    zeek -C -r <pcap_location> @load tuning/defaults
+
+If the script detects anything of note, this is outputted to a new log called 'notice.log'   !!!!!!!!!!!!!
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
