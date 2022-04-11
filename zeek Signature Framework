@@ -44,19 +44,22 @@ There is a predefined list of keywords:
                Content conditions match the actual content of the packet (or payload). They can be specified through regular expressions and declared with the payload statement or with the help of protocol analyzers. The syntax for declaring the content is: 
 
 payload /<regular expression>/
-Dependency conditions can be used to match two or more signatures by defining the <id> of the required signature. For example, requests and replies can be matched between hosts in the network. There are only two conditions available for use:
 
-requires-signature [!] <id>  – if this condition is included in a current signature, it will only match if the <id> of the required signature is part of the same connection.
-requires-reverse-signature [!] <id> – states that another signature is required, but from the opposite direction of the same connection. This is particularly useful for matching requests and replies.
-If the ! parameter is present the condition is negated, meaning that a match will occur if the <id> is not matched.
+     Dependency conditions can be used to match two or more signatures by defining the <id> of the required signature. For example, requests and replies can be matched between hosts in the network. There are only two conditions available for use:
+
+     requires-signature [!] <id>  – if this condition is included in a current signature, it will only match if the <id> of the required signature is part of the same connection.
+     requires-reverse-signature [!] <id> – states that another signature is required, but from the opposite direction of the same connection. This is particularly useful for matching requests and replies.
+     If the ! parameter is present the condition is negated, meaning that a match will occur if the <id> is not matched.
+
 Context conditions can be used to evaluate a combination of other signature conditions and pass the matches to other parts of Zeek. They're only processed if all other conditions have matched. Below are a few examples of context conditions: 
 
-payload-size <cmp> <integer> – compares the payload size of the packet.
-tcp-state <state-list> and udp-state <state list> – compares the current state of the TCP/UDP connections. The <state-list> defines the keyword for the desired state. The list has three different states:
-established – for completed three-way handshakes
-originator – sent by the originator host of the connection
-responder – sent by the responder host of the connection
+          payload-size <cmp> <integer> – compares the payload size of the packet.
+          tcp-state <state-list> and udp-state <state list> – compares the current state of the TCP/UDP connections. The <state-list> defines the keyword for the desired state. The list has three different states:
+          established – for completed three-way handshakes
+          originator – sent by the originator host of the connection
+          responder – sent by the responder host of the connection
 Actions 
+-------
 Actions, on the other hand, define what happens after a match has occurred. There are two actions available within the Zeek signature framework – the event action and the enable action.
 
 Event actions raise a signature match and can be configured to take further actions. For instance, they can generate a log or something more advanced like an email alert that's sent after a match has occurred. The string can be populated with an alert message of your choice (e.g., “Malware detected!”).  
