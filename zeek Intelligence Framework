@@ -1,19 +1,15 @@
 Zeek intelligence framework is used to consume threat intelligence data. 
-Zeek achieves this by ingesting threat intelligence data from one or more sources and comparing it against the metadata generated through the analysis of
-network traffic. In this lab, we'll explore the framework and look at how to integrate threat intelligence data with Zeek to identify potential indicators of 
-compromise. 
-
-
-What is threat intelligence?
-Threat intelligence is a collection of information about the behaviors and motivations of threat actors, used to gain insight into current and emerging threats. 
-
-Organizations use threat intelligence to help improve and adapt their defenses and security posture against threat actors. Threat intelligence uses indicators of
-compromise (IoCs) such as IP addresses, URLs, file hashes, and registry keys, which can be collected from a variety of sources such as event logs, past incident
-responses, and external sources. 
-
 The Zeek intelligence framework is used to consume the intelligence data and match it against other generated logs and metadata from the network. 
 
+What is threat intelligence
+---------------------------
+Threat intelligence is a collection of information about the behaviors and motivations of threat actors, used to gain insight into current and emerging threats. 
+
+Organizations use threat intelligence to help improve and adapt their defenses and security posture against threat actors. Threat intelligence uses (IoCs) which can
+be collected from a variety of sources such as event logs, past incident responses, and external sources. 
+
 The intelligence framework
+--------------------------
 The intelligence framework involves three main steps:
 
 The intelligence data files are loaded.
