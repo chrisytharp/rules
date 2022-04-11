@@ -1,11 +1,15 @@
-Quick Summary
-The Zeek intelligence framework is used to consume threat intelligence data, which can be used to provide information about potential threats and adversaries. Zeek achieves this by ingesting threat intelligence data from one or more sources and comparing it against the metadata generated through the analysis of network traffic. In this lab, we'll explore the framework and look at how to integrate threat intelligence data with Zeek to identify potential indicators of compromise. 
+Zeek intelligence framework is used to consume threat intelligence data. 
+Zeek achieves this by ingesting threat intelligence data from one or more sources and comparing it against the metadata generated through the analysis of
+network traffic. In this lab, we'll explore the framework and look at how to integrate threat intelligence data with Zeek to identify potential indicators of 
+compromise. 
 
 
 What is threat intelligence?
 Threat intelligence is a collection of information about the behaviors and motivations of threat actors, used to gain insight into current and emerging threats. 
 
-Organizations use threat intelligence to help improve and adapt their defenses and security posture against threat actors. Threat intelligence uses indicators of compromise (IoCs) such as IP addresses, URLs, file hashes, and registry keys, which can be collected from a variety of sources such as event logs, past incident responses, and external sources. 
+Organizations use threat intelligence to help improve and adapt their defenses and security posture against threat actors. Threat intelligence uses indicators of
+compromise (IoCs) such as IP addresses, URLs, file hashes, and registry keys, which can be collected from a variety of sources such as event logs, past incident
+responses, and external sources. 
 
 The Zeek intelligence framework is used to consume the intelligence data and match it against other generated logs and metadata from the network. 
 
@@ -18,11 +22,13 @@ The framework processes any positive matches that have been discovered and outpu
 
 Using the intelligence framework
 Intelligence files
-To make an intelligence file, you first need to create the components, or “fields”, with the information you want to have intelligence on. This involves specifying the following fields: 
+To make an intelligence file, you first need to create the components, or “fields”, with the information you want to have intelligence on. This involves specifying 
+the following fields: 
 
 indicator, which represents the value of the indicator type (e.g., an IP address or a file hash).
 indicator_type, which represents the type of indicator (e.g., Intel::ADDR or Intel::URL).
-metadata, which can be added for more descriptive information about a piece of intelligence. For example the data source, description, or the name of the threat actor that the intelligence data is attributed to.
+metadata, which can be added for more descriptive information about a piece of intelligence. For example the data source, description, or the name of the threat 
+actor that the intelligence data is attributed to.
 It is important for the fields to be separated with a single tab character, or the file won't be processed correctly.
 
 An example intel.txt file can be seen below: 
@@ -39,7 +45,8 @@ https://badurl1.ga Intel::URL bad_URLs    Example URL
 https://badurl2.gq Intel::URL bad_URLs    Example URL
 https://badurl3.ml Intel::URL bad_URLs    Example URL
 Indicator types
-There are different intelligence indicator types that you can use to match in your intelligence file. You can use one of the following components or a combination to create your intelligence:
+There are different intelligence indicator types that you can use to match in your intelligence file. You can use one of the following components or a combination 
+to create your intelligence:
 
 Intel::ADDR – IP address
 Intel::SUBNET – network subnet range
@@ -51,25 +58,32 @@ Intel::USER_NAME – user name
 Intel::CERT_HASH – SHA-1 certificate hash
 Intel::PUBKEY_HASH – MD5 public key hash
 Intel::FILE_NAME – file hash
-Intelligence files will often be separated, depending on your indicator type. For instance, you could have one file with a list of IP addresses, another file with a list of hashes, and so on. This can be seen in the practical exercise of this lab.
+Intelligence files will often be separated, depending on your indicator type. For instance, you could have one file with a list of IP addresses, another file with 
+a list of hashes, and so on. This can be seen in the practical exercise of this lab.
 
 See the official Zeek documentation for the full list of indicator types. 
 
 Loading the intelligence framework
 Now that you have sorted your intelligence files, it's time to load them into Zeek.
-Zeek comes with a set of scripts that provide data for the intelligence framework. To see any match results and to generate an intel.log, the framework must be informed that a piece of information has been extracted and compare it against the loaded intelligence files. This can be achieved with the help of the Intel::seen function. 
+Zeek comes with a set of scripts that provide data for the intelligence framework. To see any match results and to generate an intel.log, the framework must be 
+informed that a piece of information has been extracted and compare it against the loaded intelligence files. This can be achieved with the help of the Intel::seen
+function. 
 
-To load the appropriate intelligence scripts for sending data to the framework, you can use following line when creating a new .zeek script or simply include it in your local.zeek: 
+To load the appropriate intelligence scripts for sending data to the framework, you can use following line when creating a new .zeek script or simply include it in 
+your local.zeek: 
 @load frameworks/intel/seen
 
 Loading intelligence files
-Integrating threat intelligence data with Zeek can be achieved in several ways. You can configure it to load through external intelligence feeds with the help of open-source modules such as the Dovehawk Zeek Module which enables the integration of intelligence from the MISP platform. Check out a publicly available collection of Zeek formatted intelligence feeds on GitHub.
+Integrating threat intelligence data with Zeek can be achieved in several ways. You can configure it to load through external intelligence feeds with the help of
+open-source modules such as the Dovehawk Zeek Module which enables the integration of intelligence from the MISP platform. Check out a publicly available collection
+of Zeek formatted intelligence feeds on GitHub.
 
 Alternatively, you can write your own intelligence and manually add files to the framework by using the following lines: 
 redef Intel::read_files += {"Directory/intel-file.txt",};
 The first part specifies a redefinable option to read intelligence files followed by the directory and the file name. 
 
-You can also add multiple files by separating them with a comma. For example, running an intelligence script containing two intelligence files located on your desktop would look like the lines below:
+You can also add multiple files by separating them with a comma. For example, running an intelligence script containing two intelligence files located on your 
+desktop would look like the lines below:
 
 @load frameworks/intel/seen
 redef Intel::read_files += {“Desktop/hash-list.txt", "Desktop/email-list.txt"};
