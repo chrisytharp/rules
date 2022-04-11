@@ -76,7 +76,7 @@ To write signatures with Zeek, always start by naming the signature object signa
 signature http-get-request{
      ip-proto == tcp
      dst-port == 80
-     payload /GET/
+     payload /FindThisString/
      tcp-state originator
      event "HTTP GET REQUEST"
 }
