@@ -41,6 +41,15 @@ Grep is another command that can be used to match a value inside a file. This ca
                               cat <second_malicious_file> | grep <string_from_first_malicious_file>
 
 
-
+REGEX RULES
+--------------------------
+rule RegExpExample1
+{
+   strings:
+       $re1 = /md5: [0-9a-fA-F]{32}/
+       $re2 = /state: (on|off)/
+   condition:
+       $re1 and $re2
+}
 
 
