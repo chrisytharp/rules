@@ -16,6 +16,12 @@ all of them    | this will match files that have all of the strings
 any of them    | this will match files that have at least one of the strings
 all of ($a*)   | this will match files that have all of the strings in $a, $a2 and $a3
 any of ($b*)   | this will match files that have any of the strings in $b and $b2
+------Conditions can be
+$a or $b
+$a and $b
+$a and $b and $c
+($a and $b) or $c
+($a and $b) or ($c and $d) not $e
 
 Analysis
 --------
